@@ -40,8 +40,24 @@ class HttpMovieRepository implements MovieRepository
         );
     }
 
-    public function findById(string $id): ?MovieDetails
+    public function findById(string $movieId): ?MovieDetails
     {
-        return null;
+        $movie = $this->client->findById($movieId);
+
+        if (!$movie) {
+            return null;
+        }
+
+        return new MovieDetails(
+            id: $movie->id,
+            title: $movie->title,
+            year: $movie->year,
+            description: $movie->description,
+            posterUrl: $movie->posterUrl,
+            directors: $movie->directors,
+            writers: $movie->writers,
+            actors: $movie->actors,
+            genres: $movie->genres,
+        );
     }
 }

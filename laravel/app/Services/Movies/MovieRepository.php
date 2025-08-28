@@ -27,5 +27,5 @@ interface MovieRepository
     /**
      * Retrieves full movie details
      */
-    public function findById(string $id): ?MovieDetails;
+    public function findById(string $movieId): ?MovieDetails;
 }

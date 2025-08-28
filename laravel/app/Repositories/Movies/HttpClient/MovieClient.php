@@ -3,6 +3,7 @@
 namespace App\Repositories\Movies\HttpClient;
 
 use App\Repositories\Movies\HttpClient\Errors\ClientNotConfigured;
+use App\Repositories\Movies\HttpClient\Responses\MovieDetailResponse;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Support\Facades\Http;
 
@@ -50,6 +51,31 @@ class MovieClient
             }, $movies['Search'] ?? []),
             totalResults: intval($movies['totalResults'] ?? 0),
             resultPerPage: 10
+        );
+    }
+
+    /**
+     * Find a movie by his imbID
+     */
+    public function findById(string $movieId): ?MovieDetailResponse
+    {
+        $movie = $this->getClient()
+            ->get('/', ['i' => $movieId,])->json();
+
+        if (!$movie || data_get($movie, 'Response') === 'False') {
+            return null;
+        }
+
+        return new MovieDetailResponse(
+            id: $movie['imdbID'],
+            title: $movie['Title'],
+            year: $movie['Year'],
+            description: $movie['Plot'],
+            posterUrl: $movie['Poster'],
+            directors: explode(', ', $movie['Director']),
+            writers: explode(', ', $movie['Writer']),
+            actors: explode(', ', $movie['Actors']),
+            genres: explode(', ', $movie['Genre']),
         );
     }
 

@@ -7,13 +7,16 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 use App\Services\Movies\{
     DTO\SearchMoviesInput,
+    Errors\MovieNotExists,
+    GetMovieDetails,
     SearchMovies
 };
 
 class MovieController extends Controller
 {
     public function __construct(
-        private SearchMovies $searchMovies
+        private SearchMovies $searchMovies,
+        private GetMovieDetails $getMovieDetails
     ) {}
 
     /**
@@ -39,5 +42,16 @@ class MovieController extends Controller
     /**
      * Display a movie details.
      */
-    public function show(string $id) {}
+    public function show(string $movieId)
+    {
+        try {
+            $movie = $this->getMovieDetails->execute($movieId);
+
+            return response()->json([
+                'data' => $movie
+            ]);
+        } catch (MovieNotExists $e) {
+            abort(404, $e->getMessage());
+        }
+    }
 }
