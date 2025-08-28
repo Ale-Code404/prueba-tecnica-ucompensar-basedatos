@@ -1,0 +1,29 @@
+version: '3.9'
+
+services:  
+  app:
+    build: 
+      context: ./
+      target: dev
+      args:
+        USER_ID: ${UID:-1000}
+        GROUP_ID: ${GID:-1000}
+    ports:
+      - 8080:8080
+    depends_on:
+      - movies-db
+    volumes:
+      - ./:/var/www/html
+
+  movies-db:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: movies_secret
+      MYSQL_DATABASE: movies
+      MYSQL_USER: movies
+      MYSQL_PASSWORD: movies_secret
+    volumes:
+      - movies-db-data:/var/lib/mysql
+
+volumes:
+  movies-db-data:
