@@ -35,4 +35,8 @@ return [
         ],
     ],
 
+    'movies' => [
+        'url' => env('MOVIES_API_URL'),
+        'key' => env('MOVIES_API_KEY'),
+    ],
 ];
