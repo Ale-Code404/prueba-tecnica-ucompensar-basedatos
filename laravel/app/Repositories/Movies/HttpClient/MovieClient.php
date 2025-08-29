@@ -93,6 +93,8 @@ class MovieClient
         }
 
         $this->client = Http::baseUrl(config('services.movies.url'))
+            ->timeout(45)
+            ->retry(3, 1_000)
             ->withQueryParameters([
                 'apiKey' => config('services.movies.key'),
 
