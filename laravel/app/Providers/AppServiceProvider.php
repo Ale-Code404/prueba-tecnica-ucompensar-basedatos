@@ -7,9 +7,9 @@ use App\Services\Users\UserRepository;
 use Illuminate\Support\ServiceProvider;
 
 use App\Repositories\Movies\{
+    CacheHttpMovieRepository,
     EloquentMovieFavoriteRepository,
-    EloquentMovieManagerRepository,
-    HttpMovieRepository
+    EloquentMovieManagerRepository
 };
 use App\Services\Movies\{
     MovieFavoriteRepository,
@@ -33,7 +33,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->app->bind(UserRepository::class, EloquentUsersRepository::class);
-        $this->app->bind(MovieRepository::class, HttpMovieRepository::class);
+        $this->app->bind(MovieRepository::class, CacheHttpMovieRepository::class);
         $this->app->bind(MovieFavoriteRepository::class, EloquentMovieFavoriteRepository::class);
         $this->app->bind(MovieManagerRepository::class, EloquentMovieManagerRepository::class);
     }
