@@ -10,6 +10,41 @@
 -   Redis
 -   Docker
 
+## Arquitectura de la solución
+
+Principalmente se plantea el uso de servicios bien definidos, minimamente acomplados y orientados a una sola labor, haciendo uso del patrón repositorio para la abstracción de la capa de datos, permitiendo un mayor desacoplamiento de estos componentes y aumentando su mantenibilidad.
+
+En **/app** existe entonces **/app/Services** con los servicios del negocio como lo relacionado para peliculas, usuarios y autenticación, y en **/app/Repositories** para las implementaciones de acceso a datos, como interfaces a Eloquent o clientes HTTP.
+
+A continuación parte de la estructura de carpetas de **/app**:
+
+```
+├── Http
+│   ├── Controllers
+│   ├── Requests
+│   │   └── Auth
+│   └── Resources
+│       ├── Movies
+│       └── Users
+├── Models
+├── Policies
+├── Providers
+├── Repositories
+│   ├── Movies
+│   │   └── HttpClient
+│   └── Users
+├── Services
+│   ├── Auth
+│   │   ├── DTO
+│   │   └── Errors
+│   ├── Movies
+│   │   ├── DTO
+│   │   └── Errors
+│   └── Users
+│       └── DTO
+└── Users
+```
+
 ## Como ejecutarlo
 
 Este proyecto hace uso de Docker para facilitar la ejecución de las dependencias necesarias, los comandos para son:
@@ -18,11 +53,23 @@ Este proyecto hace uso de Docker para facilitar la ejecución de las dependencia
 docker compose up --build -d
 ```
 
-Si todo sale bien despuesta de este comando, podremos visitar el proyecto en _http://localhost:8080_
+Ejecutar las migraciones y los seeders
 
-## Variables de enterno
+```
+php artisan migrate --seed
+```
 
-Es necesaria configurar las siguientes variables de entorno, para una correcta configuracion es posible copiar el archivo: .env.example
+**ó**
+
+```
+docker compose exec -it app php artisan migrate --seed
+```
+
+Si todo sale bien podremos visitar el proyecto en **http://localhost:8080**
+
+## Variables de entorno
+
+Es necesaria configurar las siguientes variables de entorno, para una correcta configuracion es posible copiar el archivo: **.env.example**
 
 | Variable       | Descripcion                                                      | Valores posibles       |
 | -------------- | ---------------------------------------------------------------- | ---------------------- |
@@ -33,16 +80,21 @@ Es necesaria configurar las siguientes variables de entorno, para una correcta c
 
 -   Deberias arrancar el proyecto usando docker
 -   Debes configurar las variables de entorno
--   Puedes accces usando la credencial por defecto para el usuario **admin@movies.com**, el cual es **password**
+-   Debes ejecutar migraciones y los seeders
+-   Puedes acceder usando el usuario administrador por defecto **admin@movies.com** y su contraseña es **password**
 
 ## Componentes del sistema
 
--   Requerimiento funcionales de la prueba
--   Pruebas de integración
--   Redis para el caching de respuestas del servicio externo
--   El uso de capas/responsabilidades bien marcadas
--   Documentación tecnica de la API autogenerada en **http://localhost:8080/docs/api**
--   Uso de CI para el testing automatizado
+-   [x] Requerimientos funcionales de la prueba
+-   [x] Pruebas de integración
+-   [x] Redis para el caching de respuestas del servicio externo
+-   [x] El uso de capas/responsabilidades bien marcadas
+-   [x] Documentación tecnica de la API autogenerada en **http://localhost:8080/docs/api**
+-   [x] Uso de CI para el testing automatizado
+
+### Puntos pendientes
+
+-   [] Una interfaz a medida (se apoya en la documentación por ahora)
 
 ## Capturas del sistema
 
