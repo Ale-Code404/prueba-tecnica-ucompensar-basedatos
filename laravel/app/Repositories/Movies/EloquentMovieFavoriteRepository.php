@@ -17,7 +17,7 @@ class EloquentMovieFavoriteRepository implements MovieFavoriteRepository
             )->paginate();
     }
 
-    public function addFavorite(string $userId, string $movieId): void
+    public function create(string $userId, string $movieId): void
     {
         Movie::query()
             ->findOrFail($movieId)
@@ -25,11 +25,21 @@ class EloquentMovieFavoriteRepository implements MovieFavoriteRepository
             ->attach($userId);
     }
 
-    public function removeFavorite(string $userId, string $movieId): void
+    public function delete(string $userId, string $movieId): void
     {
         Movie::query()
             ->findOrFail($movieId)
             ->favorites()
             ->detach($userId);
+    }
+
+    public function exists(string $userId, string $movieId): bool
+    {
+        return Movie::query()->whereHas(
+            'favorites',
+            fn($query) => $query
+                ->where('user_id', $userId)
+                ->where('movie_id', $movieId)
+        )->exists();
     }
 }

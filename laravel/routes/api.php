@@ -19,5 +19,5 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('users', UserController::class)->only('index');
     Route::apiResource('movies', MovieController::class)->only('index', 'show');
-    Route::apiResource('favorites', MovieFavoriteController::class)->only('index');
+    Route::apiResource('favorites', MovieFavoriteController::class)->only('index', 'store');
 });

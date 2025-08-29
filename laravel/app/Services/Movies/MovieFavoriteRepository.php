@@ -14,10 +14,15 @@ interface MovieFavoriteRepository
     /**
      * Add a movie to the user's favorites.
      */
-    public function addFavorite(string $userId, string $movieId): void;
+    public function create(string $userId, string $movieId): void;
 
     /**
      * Remove a movie from the user's favorites.
      */
-    public function removeFavorite(string $userId, string $movieId): void;
+    public function delete(string $userId, string $movieId): void;
+
+    /**
+     * Check if a movie is favorite by a user.
+     */
+    public function exists(string $userId, string $movieId): bool;
 }

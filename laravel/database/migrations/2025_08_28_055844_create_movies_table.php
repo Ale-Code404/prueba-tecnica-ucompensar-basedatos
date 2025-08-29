@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('title');
             $table->text('description');
             $table->string('poster')->nullable();
-            $table->date('released_at');
+            $table->smallInteger('year');
             $table->timestamps();
 
             $table->comment('Table for storing a short mirror of movies info');

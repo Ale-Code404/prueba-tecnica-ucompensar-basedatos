@@ -6,12 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Movie extends Model
 {
+    protected $keyType = 'string';
+
     protected $fillable = [
-        'imdb_id',
+        'id',
         'title',
         'description',
         'poster',
-        'released_at',
+        'year',
     ];
 
     public function favorites()
