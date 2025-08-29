@@ -11,6 +11,7 @@ use App\Services\Movies\{
     Errors\MovieAlreadyFavorite,
     Errors\MovieNotExists,
     CreateMovieFavorite,
+    DeleteMovieFavorite,
     GetMovieFavorites
 };
 
@@ -20,7 +21,7 @@ class MovieFavoriteController extends Controller
         private GetCurrentUser $getCurrentUser,
         private GetMovieFavorites $getMovieFavorites,
         private CreateMovieFavorite $createMovieFavorite,
-        // private RemoveFavoriteMovie $removeFavoriteMovie
+        private DeleteMovieFavorite $deleteMovieFavorite
     ) {}
 
     /**
@@ -65,8 +66,19 @@ class MovieFavoriteController extends Controller
     /**
      * Remove a movie from favorites.
      */
-    public function destroy(string $id)
+    public function destroy(string $movieId)
     {
-        //
+        $user = $this->getCurrentUser->execute();
+
+        try {
+            $this->deleteMovieFavorite->execute(
+                $user->id,
+                $movieId
+            );
+        } catch (MovieNotExists $e) {
+            abort(400, $e->getMessage());
+        }
+
+        return response()->noContent();
     }
 }
