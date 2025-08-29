@@ -58,6 +58,9 @@ class AuthController extends Controller
     {
         $validated = $request->validated();
 
+        /**
+         * @status 201
+         */
         return new UserResource(
             $this->createUser->execute(new CreateUserInput(
                 name: $validated['name'],
